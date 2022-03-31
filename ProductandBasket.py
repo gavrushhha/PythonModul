@@ -11,10 +11,14 @@ class Basket:
         self.basket: List[Product] = []
     def add(self, product: Product):
         self.basket.append(product)
-        return 'add'
-    def remove(self, product: Product):
-        self.basket.remove(product)
-        return 'remove'
+        return self.basket
+
+    def remove(self, name: str):
+        for product in self.basket:
+            if product.name == name:
+                self.basket.remove(product)
+        return self.basket
+
     def count_sum(self):
         summ = 0
         for i in range(0, len(self.basket)):

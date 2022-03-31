@@ -1,22 +1,36 @@
 from ProductandBasket import *
 import pytest
+from typing import List
 
-
-test1 = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], 'add')]
-@pytest.mark.parametrize('product, s', test1)
-def test_add(product: Product, s: str):
+tests = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], [Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)]),\
+    ([Product('bread', 50.0)], [Product('bread', 50.0)])]
+@pytest.mark.parametrize('basket, ideal', tests)
+def test_add(basket: List[Product], ideal : List[Product]):
     basket1 = Basket()
-    for p in product:
+    for p in basket:
         basket1.add(p)
-        assert s == basket1.add(p)
+    is_equal = True
+    for p1, p2 in zip(ideal, basket1.basket):
+        if not (p1.name == p2.name and p1.price == p2.price):
+            is_equal = False
+            break
+    assert is_equal
 
-test2 = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], 'remove')]
-@pytest.mark.parametrize('product, s', test2)
-def test_remove(product: Product, s: str):
+tests1 = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], [Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)]),\
+    ([Product('bread', 50.0)], [Product('bread', 50.0)])]
+
+@pytest.mark.parametrize('basket, ideal', tests1)
+def test_remove(basket: List[Product], ideal : List[Product]):
     basket2 = Basket()
-    for p in product:
+    for p in basket:
         basket2.add(p)
-    assert s == basket2.remove(p)
+        basket2.remove(p)
+    is_equal = True
+    for p1, p2 in zip(ideal, basket2.basket):
+        if not (p1.name == p2.name and p1.price == p2.price):
+            is_equal = False
+            break
+    assert is_equal
 
 test3 = [([Product('bread', 50.0), Product('carrot', 20.0), Product('tea', 100.0)], 170.0)]
 @pytest.mark.parametrize('product, s', test3)
